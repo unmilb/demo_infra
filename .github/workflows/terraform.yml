@@ -49,15 +49,13 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "env/dev"
-      - "env/prod"
-      - "modules"
+      - env/**
+      - modules/**
   pull_request:
     branches: [ "main" ]
     paths:
-      - "env/dev"
-      - "env/prod"
-      - "modules"
+      - env/**
+      - modules/**
 
 permissions:
   contents: read
