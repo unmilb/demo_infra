@@ -49,6 +49,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
+      - .github/**
       - env/**
       - modules/**
   pull_request:
