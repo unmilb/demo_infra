@@ -92,7 +92,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -input=false -out tfplan --var-file="parameters.${INFRA_ENV}.tfvars"
+      run: terraform plan -input=false -out tfplan --var-file="env\dev\parameters.dev.tfvars"
       
     - name: Await Manual Approval
       uses: trstringer/manual-approval@v1
