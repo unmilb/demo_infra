@@ -105,7 +105,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -input=false -out tfplan --var-file=parameters.dev.tfvars
+      run: ls -lhtr && terraform plan -input=false -out tfplan --var-file="parameters.dev.tfvars"
       working-directory: env/dev
       
     - name: Await Manual Approval
