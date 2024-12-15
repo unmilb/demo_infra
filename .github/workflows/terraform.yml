@@ -88,15 +88,15 @@ jobs:
       run: terraform fmt -check
     
     - name: Confirm folder structures
-      run: ls -lhtr && echo "#########" && pwd 
+      run: cd env/dev/ 
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init
-      
+      run: terraform init -backend-config=backend.tf
+
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: cd env/dev/ && terraform plan -input=false -out tfplan --var-file=parameters.dev.tfvars
+      run: terraform plan -input=false -out tfplan --var-file=parameters.dev.tfvars
       
     - name: Await Manual Approval
       uses: trstringer/manual-approval@v1
