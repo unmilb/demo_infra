@@ -92,11 +92,13 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init -backend-config=backend.tf
+      run: terraform init
+      working-directory: env/dev
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false -out tfplan --var-file=parameters.dev.tfvars
+      working-directory: env/dev
       
     - name: Await Manual Approval
       uses: trstringer/manual-approval@v1
