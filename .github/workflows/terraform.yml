@@ -89,7 +89,9 @@ jobs:
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
       run: terraform fmt -check
-
+    
+    - name: Confirm folder structures
+      run: ls -lhtr && echo "#########" && pwd 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false -out tfplan --var-file="env/dev/parameters.dev.tfvars"
