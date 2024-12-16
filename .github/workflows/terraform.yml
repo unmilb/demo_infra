@@ -81,8 +81,8 @@ jobs:
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      # with:
+      #   cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
     # Step 5: Set up creds
     - name: Configure AWS credentials
@@ -92,22 +92,27 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ vars.AWS_REGION }}
         
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+      working-directory: env/dev
+
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
       run: terraform fmt -check
     
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init
-      #working-directory: env/dev
+    # Terraform Validate
+    - name: Teraform Validate Plan
+      run: terraform validate
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: ls -lhtr && terraform plan -input=false -out tfplan --var-file="env/dev/parameters.dev.tfvars"
-      #working-directory: env/dev
+      run: terraform plan -input=false -out tfplan --var-file="parameters.dev.tfvars"
+      working-directory: env/dev
       
     - name: Await Manual Approval
       uses: trstringer/manual-approval@v1
+      if: ${{ github.event_name != 'pull_request' }}
       with:
         secret: ${{ github.TOKEN }}
         approvers: unmilb
@@ -120,3 +125,5 @@ jobs:
       # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
     - name: Terraform Apply
       run: terraform apply -auto-approve -input=false tfplan
+      working-directory: env/dev
+      if: ${{ github.event_name != 'pull_request' }}
